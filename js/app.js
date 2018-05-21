@@ -19,12 +19,11 @@ class Enemy {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    console.log(`updated at ${dt}`);
   }
   // Draw the enemy on the screen, required method for game
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    console.log(`${this} was rendered.`);
+
   }
 }
 
@@ -32,20 +31,61 @@ class Enemy {
 // This class requires an update(), render() and
 // a handleInput() method.
 class Player {
-  constructor() {
-
+  constructor(spriteImg, xPos, yPos) {
+    this.sprite = spriteImg;
+    // x position of image
+    this.x = xPos;
+    // y position of image
+    this.y = yPos;
+    // if true, user requests to go up
+    this.moveUp = false;
+    // if true, user requests to go right
+    this.moveRight = false;
+    // if true, user requests to go down
+    this.moveDown = false;
+    // if true, user requests to go left
+    this.moveLeft = false;
   }
 
-  update(dt) {
-
+  update() {
+    if(this.moveUp) {
+      console.log('user wants to move up');
+      this.moveUp = false;
+    }
+    if(this.moveRight) {
+      console.log('user wants to move right');
+      this.moveRight = false;
+    }
+    if(this.moveDown) {
+      console.log('user wants to move down');
+      this.moveDown = false;
+    }
+    if(this.moveLeft) {
+      console.log('user wants to move left');
+      this.moveLeft = false;
+    }
   }
 
   render() {
-
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 
-  handleInput() {
-
+  handleInput(key) {
+    if(key !== undefined) {
+      switch(key) {
+        case 'left':
+        this.moveLeft = true;
+        break;
+        case 'up':
+        this.moveUp = true;
+        break;
+        case 'right':
+        this.moveRight = true;
+        break;
+        case 'down':
+        this.moveDown = true;
+      }
+    }
   }
 }
 
@@ -53,10 +93,14 @@ class Player {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-const allEnemies = [];
+const allEnemies = [
+  new Player('images/enemy-bug.png', 0, 62),
+  new Player('images/enemy-bug.png', 0, 145),
+  new Player('images/enemy-bug.png', 0, 228)
+];
 
 // Place the player object in a variable called player
-const player = new Player();
+const player = new Player('images/char-boy.png', 202, 380);
 
 
 
