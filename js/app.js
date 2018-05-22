@@ -19,6 +19,9 @@ class Enemy {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    //let speed = Math.random() * 30;
+    
+
   }
   // Draw the enemy on the screen, required method for game
   render() {
@@ -82,6 +85,7 @@ class Player {
 
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
   }
 
   handleInput(key) {
@@ -108,9 +112,9 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 const allEnemies = [
-  new Player('images/enemy-bug.png', 0, 62),
-  new Player('images/enemy-bug.png', 0, 145),
-  new Player('images/enemy-bug.png', 0, 228)
+  new Enemy('images/enemy-bug.png', 0, 62),
+  new Enemy('images/enemy-bug.png', 0, 145),
+  new Enemy('images/enemy-bug.png', 0, 228)
 ];
 
 // Place the player object in a variable called player
