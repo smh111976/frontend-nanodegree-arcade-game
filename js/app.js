@@ -51,39 +51,31 @@ class Player {
     let potentialXpos, potentialYpos, xPosJump = 101, yPosJump = 83,
         minYpos = -35, maxYpos = 380, minXpos = 0, maxXpos = 404;
     if(this.moveUp) {
-      console.log(`y pos. before move: ${this.y}`);
       potentialYpos = this.y - yPosJump;
       if(potentialYpos >= minYpos) {
         this.y = potentialYpos;
       }
-      console.log(`y pos. after move: ${this.y}`);
       this.moveUp = false;
     }
     if(this.moveRight) {
-      console.log(`x pos. before move: ${this.x}`);
       potentialXpos = this.x + xPosJump;
       if(potentialXpos <= maxXpos) {
         this.x = potentialXpos;
       }
-      console.log(`x pos. after move: ${this.x}`);
       this.moveRight = false;
     }
     if(this.moveDown) {
-      console.log(`y pos. before move: ${this.y}`);
       potentialYpos = this.y + yPosJump;
       if(potentialYpos <= maxYpos) {
         this.y = potentialYpos;
       }
-      console.log(`y pos. after move: ${this.y}`);
       this.moveDown = false;
     }
     if(this.moveLeft) {
-      console.log(`x pos. before move: ${this.x}`);
       potentialXpos = this.x - xPosJump;
       if(potentialXpos >= minXpos) {
         this.x = potentialXpos;
       }
-      console.log(`x pos. after move: ${this.x}`);
       this.moveLeft = false;
     }
   }
