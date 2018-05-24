@@ -1,32 +1,56 @@
+// global variables
+const canvasTop = 50;
+const canvasBottom = 600;
+const canvasLeft = 0;
+const canvasRight = 505;
+const laneYcoords = [134, 217, 300];
+let score = 0;
+let justScored = false;
+
+
 // Enemies our player must avoid
 class Enemy {
   constructor(spriteImg, xPos, yPos) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // The image/sprite for our enemies
     this.sprite = spriteImg;
-    // x position of image
-    this.x = xPos;
-    // y position of image
+    // x starting position
+    this.xStart = xPos;
+    // x position of character
+    this.x = this.xStart;
+    // y position of character
     this.y = yPos;
+    // character height
+    this.height = 80;
+    // character width
+    this.width = 100;
+    // character speed
+    this.speed = 0;
+    // various enemy speeds
+    this.speeds = [233, 266, 300, 333, 366, 400, 433, 466, 500, 533];
   }
-
   // Update the enemy's position, required method for game
   // Parameter: dt, a time delta between ticks
   update(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    //let speed = Math.random() * 30;
-    
-
+    if(this.x === this.xStart) {
+      this.y = this.chooseLane(laneYcoords);
+      this.speed = (this.speeds[Math.floor(Math.random() * this.speeds.length)]) * dt;
+    }
+    if(this.x < canvasRight) {
+      this.x += this.speed;
+    } else {
+      this.x = this.xStart;
+    }
+  }
+  // choose one of three lanes for the enemy to travel across
+  chooseLane(laneYcoords) {
+    return laneYcoords[Math.floor(Math.random() * laneYcoords.length)];
   }
   // Draw the enemy on the screen, required method for game
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-
   }
 }
 
@@ -36,10 +60,18 @@ class Enemy {
 class Player {
   constructor(spriteImg, xPos, yPos) {
     this.sprite = spriteImg;
-    // x position of image
-    this.x = xPos;
-    // y position of image
-    this.y = yPos;
+    // x starting position
+    this.xStart = xPos;
+    // x position
+    this.x = this.xStart;
+    // y starting position
+    this.yStart = yPos;
+    // y position of character
+    this.y = this.yStart;
+    // character height
+    this.height = 80;
+    // character width
+    this.width = 70;
     // if true, user requests to go up
     this.moveUp = false;
     // if true, user requests to go right
@@ -48,44 +80,71 @@ class Player {
     this.moveDown = false;
     // if true, user requests to go left
     this.moveLeft = false;
+    // distance player can jump side to side on single xPosJump
+    this.xJump = 101;
+    // distance player can jump up and down on a single jump
+    this.yJump = 83;
   }
 
   update() {
-    let potentialXpos, potentialYpos, xPosJump = 101, yPosJump = 83,
-        minYpos = -35, maxYpos = 380, minXpos = 0, maxXpos = 404;
+    // if 'up' arrow was pressed
     if(this.moveUp) {
-      potentialYpos = this.y - yPosJump;
-      if(potentialYpos >= minYpos) {
-        this.y = potentialYpos;
+      if(this.y - this.yJump >= canvasTop) {
+        this.y -= this.yJump;
+      }
+      if(this.y === canvasTop) {
+        score++;
+        console.log("YOU SCORED!!!");
+        // this.y = this.yStart;
       }
       this.moveUp = false;
     }
+    // if 'right' arrow was pressed
     if(this.moveRight) {
-      potentialXpos = this.x + xPosJump;
-      if(potentialXpos <= maxXpos) {
-        this.x = potentialXpos;
+      if(this.x + this.xJump + this.width <= canvasRight) {
+        this.x += this.xJump;
       }
       this.moveRight = false;
     }
+    // if 'down' arrow was pressed
     if(this.moveDown) {
-      potentialYpos = this.y + yPosJump;
-      if(potentialYpos <= maxYpos) {
-        this.y = potentialYpos;
+      if(this.y + this.yJump + this.height <= canvasBottom) {
+        this.y += this.yJump;
       }
       this.moveDown = false;
     }
+    // if 'left' arrow was pressed
     if(this.moveLeft) {
-      potentialXpos = this.x - xPosJump;
-      if(potentialXpos >= minXpos) {
-        this.x = potentialXpos;
+      if(this.x - this.xJump >= canvasLeft) {
+        this.x -= this.xJump;
       }
       this.moveLeft = false;
     }
+    // if a collision is detected
+    if(this.detectCollision(allEnemies)) {
+      this.x = this.xStart;
+      this.y = this.yStart;
+      if(score > 0) {
+        score--;
+      }
+    }
+
+
   }
 
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-
+  }
+  // method used to detect collisions with enemy bugs
+  detectCollision(enemies) {
+    let collision = false;
+    for(let enemy of enemies) {
+      if(this.x < enemy.x + enemy.width && this.x + this.width > enemy.x &&
+         this.y < enemy.y + enemy.height && this.y + this.height > enemy.y) {
+        collision = true;
+      }
+    }
+    return collision;
   }
 
   handleInput(key) {
@@ -112,13 +171,14 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 const allEnemies = [
-  new Enemy('images/enemy-bug.png', 0, 62),
-  new Enemy('images/enemy-bug.png', 0, 145),
-  new Enemy('images/enemy-bug.png', 0, 228)
+  new Enemy('images/enemy-bug2.png', -150, 134),
+  new Enemy('images/enemy-bug2.png', -150, 217),
+  new Enemy('images/enemy-bug2.png', -150, 300)
 ];
 
 // Place the player object in a variable called player
-const player = new Player('images/char-boy.png', 202, 380);
+// const player = new Player('images/char-boy.png', 202, 380);
+const player = new Player('images/char-boy2.png', 218, 465);
 
 
 

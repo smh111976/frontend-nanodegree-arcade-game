@@ -28,6 +28,20 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -98,6 +112,19 @@ var Engine = (function(global) {
         player.update();
     }
 
+    // score
+    function drawScore() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Score: "+score, 8, 20);
+    }
+
+    function drawScoreMsg() {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#0095DD";
+      ctx.fillText("You Scored! Congratulations!", 300, 20);
+    }
+
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
@@ -140,6 +167,12 @@ var Engine = (function(global) {
             }
         }
 
+        drawScore();
+        if(justScored) {
+          drawScoreMsg();
+        }
+
+
         renderEntities();
     }
 
@@ -175,10 +208,10 @@ var Engine = (function(global) {
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/enemy-bug2.png',
+        'images/char-boy2.png'
     ]);
-    
+
     Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
