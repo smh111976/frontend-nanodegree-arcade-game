@@ -119,12 +119,6 @@ var Engine = (function(global) {
         ctx.fillText("Score: "+score, 8, 20);
     }
 
-    function drawScoreMsg() {
-      ctx.font = "16px Arial";
-      ctx.fillStyle = "#0095DD";
-      ctx.fillText("You Scored! Congratulations!", 300, 20);
-    }
-
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
@@ -168,11 +162,7 @@ var Engine = (function(global) {
         }
 
         drawScore();
-        if(justScored) {
-          drawScoreMsg();
-        }
-
-
+        
         renderEntities();
     }
 

@@ -5,7 +5,7 @@ const canvasLeft = 0;
 const canvasRight = 505;
 const laneYcoords = [134, 217, 300];
 let score = 0;
-let justScored = false;
+let allowScore = true;
 
 
 // Enemies our player must avoid
@@ -93,9 +93,7 @@ class Player {
         this.y -= this.yJump;
       }
       if(this.y === canvasTop) {
-        score++;
-        console.log("YOU SCORED!!!");
-        // this.y = this.yStart;
+        handleScore();
       }
       this.moveUp = false;
     }
@@ -122,11 +120,7 @@ class Player {
     }
     // if a collision is detected
     if(this.detectCollision(allEnemies)) {
-      this.x = this.xStart;
-      this.y = this.yStart;
-      if(score > 0) {
-        score--;
-      }
+      handleCollision();
     }
 
 
@@ -134,6 +128,10 @@ class Player {
 
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+  reset() {
+    player.x = player.xStart;
+    player.y = player.yStart;
   }
   // method used to detect collisions with enemy bugs
   detectCollision(enemies) {
@@ -180,8 +178,6 @@ const allEnemies = [
 // const player = new Player('images/char-boy.png', 202, 380);
 const player = new Player('images/char-boy2.png', 218, 465);
 
-
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -191,6 +187,33 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function showMsg(type) {
+  var x = document.querySelector(`.${type}-msg`);
+  x.classList.add("show");
+  setTimeout(function() {
+    x.classList.remove("show");
+  }, 1500);
+}
+
+function handleScore() {
+  showMsg("score");
+  if(allowScore) {
+    score++;
+    allowScore = false;
+  }
+  setTimeout(function() {
+    player.reset();
+    allowScore = true;
+  }, 200);
+}
+
+function handleCollision() {
+  showMsg("collision");
+  if(score > 0) {
+    score--;
+  }
+  player.reset();
+}
