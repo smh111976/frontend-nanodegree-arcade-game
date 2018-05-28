@@ -7,9 +7,11 @@ For detailed instructions on how to get started, check out this [guide](https://
 
 Game Instructions
 ===============================
-1. use your keyboard's arrow keys to move up, down, left and right on the board.
-2. if you reach the stream at the top of the screen, you will earn a point and you will be moved back
+1. To load game locally, first download or clone the [repository](https://github.com/smh111976/frontend-nanodegree-arcade-game).
+2. Next, open the index.html in your browser.
+3. use your keyboard's arrow keys to move up, down, left and right on the board.
+4. if you reach the stream at the top of the screen, you will earn a point and you will be moved back
    to your starting position to attempt to score again if you choose.
-3. if you are hit by one of the moving enemy bugs, you will lose a point (if your score is above zero)
+5. if you are hit by one of the moving enemy bugs, you will lose a point (if your score is above zero)
    and be moved back to your starting position.
-4. if you want to reset the score and start over, refresh the browser.
+6. if you want to reset the score and start over, refresh the browser.
